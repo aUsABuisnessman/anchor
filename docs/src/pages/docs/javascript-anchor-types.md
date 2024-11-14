@@ -3,109 +3,110 @@ title: Javascript Anchor Types Reference
 description: Anchor - Javascript Anchor Types Reference
 ---
 
-This reference shows you how Anchor maps Rust types to JavaScript/TypeScript types in the client.
+This reference shows you how anchor maps rust types to javascript/typescript types in the client.
 
 ---
 
 {% table %}
-* Type
-* Rust
-* TypeScript
+* Rust Type
+* Javascript Type
 * Example
+* Note
 ---
-* ## Boolean
 * `bool`
-* `boolean`
-* ```typescript
-  true
+* `bool`
+* ```javascript
+  await program
+    .methods
+    .init(true)
+    .rpc();
   ```
 ---
-* ## Integer
-* `u8/u16/u32/i8/i16/i32`
-* `number`
-* ```typescript
-  99
-  ```
----
-* ## Big integer
 * `u64/u128/i64/i128`
 * `anchor.BN`
-* ```typescript
-  new anchor.BN(99)
-  ```
+* ```javascript
+    await program
+    .methods
+    .init(new anchor.BN(99))
+    .rpc();
+    ```
+* [https://github.com/indutny/bn.js/](https://github.com/indutny/bn.js/ )
 ---
-* ## Float
+* `u8/u16/u32/i8/i16/i32`
+* `number`
+* ```javascript
+    await program
+    .methods
+    .init(99)
+    .rpc();
+    ```
+---
 * `f32/f64`
 * `number`
-* ```typescript
-  1.0
-  ```
+* ```javascript
+    await program
+    .methods
+    .init(1.0)
+    .rpc();
+    ```
 ---
-* ## String
+* `Enum`
+* `{ variantName: {} }`
+*   ```rust
+      enum MyEnum { One, Two };
+    ```
+    ```javascript
+    await program
+    .methods
+    .init({ one: {} })
+    .rpc();
+    ```
+    ```rust
+    enum MyEnum { One: { val: u64 }, Two };
+    ```
+    ```javascript
+    await program
+    .methods
+    .init({ one: { val: 99 } })
+    .rpc();
+    ```
+---
+* `Struct`
+* `{ val: {} }`
+* ```rust
+    struct MyStruct { val: u64 };
+    ```
+  ```javascript
+    await program
+    .methods
+    .init({ val: 99 })
+    .rpc();
+    ```
+---
+* `[T; N]`
+* `[ T ]`
+* ```javascript
+    await program
+    .methods
+    .init([1,2,3])
+    .rpc();
+    ```
+---
 * `String`
 * `string`
-* ```typescript
-  "hello"
-  ```
+* ```javascript
+    await program
+    .methods
+    .init("hello")
+    .rpc();
+    ```
 ---
-* ## Array
-* `[T; N]`
-* `Array<T>`
-* ```typescript
-  [1, 2, 3]
-  ```
----
-* ## Vector
 * `Vec<T>`
-* `Array<T>`
-* ```typescript
-  [1, 2, 3]
-  ```
----
-* ## Option
-* `Option<T>`
-* `T | null | undefined`
-* `None`:
-  ```typescript
-  null
-  ```
-  `Some(val)`:
-  ```typescript
-  42
-  ```
----
-* ## Struct
-* `Struct`
-* `object`
-* ```rust
-  struct MyStruct {
-    val: u16,
-  }
-  ```
-  ```typescript
-  { val: 99 }
-  ```
----
-* ## Enum
-* `Enum`
-* `object`
-* ```rust
-  enum MyEnum {
-      One,
-      Two { val: u32 },
-      Three(u8, i16),
-  }
-  ```
-  Unit variant:
-  ```typescript
-  { one : {} }
-  ```
-  Named variant:
-  ```typescript
-  { two: { val: 99 } }
-  ```
-  Unnamed (tuple) variant:
-  ```typescript
-  { three: [12, -34] }
-  ```
+* `[ T ]`
+* ```javascript
+    await program
+    .methods
+    .init([1,2,3])
+    .rpc();
+    ```
 {% /table %}

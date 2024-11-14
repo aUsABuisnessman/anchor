@@ -1,7 +1,10 @@
-import * as anchor from "@coral-xyz/anchor";
-import { AnchorError, type Program } from "@coral-xyz/anchor";
+import * as anchor from '@project-serum/anchor';
+import { AnchorError, Program } from '@project-serum/anchor';
 import { TicTacToe } from '../target/types/tic_tac_toe';
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import { expect } from 'chai';
+chai.use(chaiAsPromised);
 
 async function play(program: Program<TicTacToe>, game, player, tile, expectedTurn, expectedGameState, expectedBoard) {
   await program.methods

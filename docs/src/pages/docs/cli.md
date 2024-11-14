@@ -20,7 +20,6 @@ FLAGS:
     -V, --version    Prints version information
 
 SUBCOMMANDS:
-    account    Fetch and deserialize an account using the IDL provided
     build      Builds the workspace
     cluster    Cluster commands
     deploy     Deploys each program in the workspace
@@ -28,7 +27,6 @@ SUBCOMMANDS:
     help       Prints this message or the help of the given subcommand(s)
     idl        Commands for interacting with interface definitions
     init       Initializes a workspace
-    keys       Program keypair commands
     migrate    Runs the deploy migration script
     new        Creates a new program
     shell      Starts a node shell with an Anchor client setup according to the local config
@@ -38,28 +36,6 @@ SUBCOMMANDS:
                command inside a program subdirectory, i.e., in the dir containing the program's
                Cargo.toml
 ```
-
-## Account
-
-```
-anchor account <program-name>.<AccountTypeName> <account_pubkey>
-```
-
-Fetches an account with the given public key and deserializes the data to JSON using the type name provided. If this command is run from within a workspace, the workspace's IDL files will be used to get the data types. Otherwise, the path to the IDL file must be provided.
-
-The `program-name` is the name of the program where the account struct resides, usually under `programs/<program-name>`. `program-name` should be provided in a case-sensitive manner exactly as the folder name, usually in kebab-case.
-
-The `AccountTypeName` is the name of the account struct, usually in PascalCase.
-
-The `account_pubkey` refers to the Pubkey of the account to deserialise, in Base58.
-
-Example Usage: `anchor account anchor-escrow.EscrowAccount 3PNkzWKXCsbjijbasnx55NEpJe8DFXvEEbJKdRKpDcfK`, deserializes an account in the given pubkey with the account struct `EscrowAccount` defined in the `anchor-escrow` program.
-
-```
-anchor account <program-name>.<AccountTypeName> <account_pubkey> --idl <path/to/idl.json>
-```
-
-Deserializes the account with the data types provided in the given IDL file even if inside a workspace.
 
 ## Build
 
@@ -75,15 +51,6 @@ anchor build --verifiable
 
 Runs the build inside a docker image so that the output binary is deterministic (assuming a Cargo.lock file is used). This command must be run from within a single crate subdirectory within the workspace. For example, `programs/<my-program>/`.
 
-{% callout title="Tip" %}
-It's possible to pass arguments to the underlying `cargo build-sbf` command with `-- <ARGS>`. For example:
-
-```
-anchor build -- --features my-feature
-```
-
-{% /callout %}
-
 ## Cluster
 
 ### Cluster list
@@ -97,6 +64,7 @@ This lists cluster endpoints:
 ```shell
 Cluster Endpoints:
 
+* Mainnet - https://solana-api.projectserum.com
 * Mainnet - https://api.mainnet-beta.solana.com
 * Devnet  - https://api.devnet.solana.com
 * Testnet - https://api.testnet.solana.com
@@ -111,7 +79,7 @@ anchor deploy
 Deploys all programs in the workspace to the configured cluster.
 
 {% callout title="Tip" %}
-This is different from the `solana program deploy` command, because every time it's run
+This is different from the `solana program deploy` command, because everytime it's run
 it will generate a _new_ program address.
 {% /callout %}
 
@@ -131,16 +99,8 @@ If run with the `--program-name` option, expand only the given program.
 
 The `idl` subcommand provides commands for interacting with interface definition files.
 It's recommended to use these commands to store an IDL on chain, at a deterministic
-address, as a function of nothing but the program's ID. This
+address, as a function of nothing but the the program's ID. This
 allows us to generate clients for a program using nothing but the program ID.
-
-### Idl Build
-
-```shell
-anchor idl build
-```
-
-Generates the IDL for the program using the compilation method.
 
 ### Idl Init
 
@@ -214,26 +174,6 @@ Initializes a project workspace with the following structure.
 - `tests/`: Directory for JavaScript integration tests.
 - `migrations/deploy.js`: Deploy script.
 
-## Keys
-
-Program keypair commands.
-
-### Keys List
-
-```shell
-anchor keys list
-```
-
-List all of the program keys.
-
-### Keys Sync
-
-```shell
-anchor keys sync
-```
-
-Sync program `declare_id!` pubkeys with the program's actual pubkey.
-
 ## Migrate
 
 ```shell
@@ -246,7 +186,7 @@ from the workspace's `Anchor.toml`. For example,
 ```javascript
 // File: migrations/deploys.js
 
-const anchor = require('@coral-xyz/anchor')
+const anchor = require('@project-serum/anchor')
 
 module.exports = async function (provider) {
   anchor.setProvider(provider)

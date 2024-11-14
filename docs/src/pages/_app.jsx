@@ -15,22 +15,19 @@ import '@/styles/tailwind.css'
 
 const navigation = [
   {
-    title: 'Getting Started',
+    title: 'Prologue',
     links: [
-      { title: 'Introduction', href: '/' },
-      { title: 'Quickstart', href: '/docs/solana-playground' },
-      { title: 'Installation', href: '/docs/installation' },
-      { title: 'Hello World', href: '/docs/hello-world' },
-      { title: 'Intro to Solana', href: '/docs/intro-to-solana' },
+      { title: 'Release Notes', href: '/docs/release-notes' },
+      { title: 'Contribution Guide', href: '/docs/contribution-guide' },
     ],
   },
   {
-    title: 'Release Notes',
+    title: 'Getting Started',
     links: [
-      { title: '0.30.1', href: '/release-notes/0.30.1' },
-      { title: '0.30.0', href: '/release-notes/0.30.0' },
-      { title: '0.29.0', href: '/release-notes/0.29.0' },
-      { title: 'CHANGELOG', href: '/release-notes/changelog' },
+      { title: 'Introduction', href: '/' },
+      { title: 'Installation', href: '/docs/installation' },
+      { title: 'Hello World', href: '/docs/hello-world' },
+      { title: 'Intro to Solana', href: '/docs/intro-to-solana' },
     ],
   },
   {
@@ -59,7 +56,6 @@ const navigation = [
   {
     title: 'Guides',
     links: [
-      { title: 'Contribution Guide', href: '/docs/contribution-guide' },
       { title: 'Publishing Source', href: '/docs/publishing-source' },
       {
         title: 'Verifiable Builds',
@@ -70,8 +66,6 @@ const navigation = [
   {
     title: 'References',
     links: [
-      { title: 'Account Constraints', href: '/docs/account-constraints' },
-      { title: 'Account Types', href: '/docs/account-types' },
       { title: 'Anchor.toml', href: '/docs/manifest' },
       { title: 'CLI', href: '/docs/cli' },
       { title: 'AVM', href: '/docs/avm' },

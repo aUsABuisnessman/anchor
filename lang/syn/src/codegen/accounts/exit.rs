@@ -1,6 +1,5 @@
-use crate::accounts_codegen::constraints::OptionalCheckScope;
 use crate::codegen::accounts::{generics, ParsedGenerics};
-use crate::{AccountField, AccountsStruct, Ty};
+use crate::{AccountField, AccountsStruct};
 use quote::quote;
 
 // Generates the `Exit` trait implementation.
@@ -30,32 +29,18 @@ pub fn generate(accs: &AccountsStruct) -> proc_macro2::TokenStream {
                 let name_str = ident.to_string();
                 if f.constraints.is_close() {
                     let close_target = &f.constraints.close.as_ref().unwrap().sol_dest;
-                    let close_target_optional_check =
-                        OptionalCheckScope::new(accs).generate_check(close_target);
-
                     quote! {
-                        {
-                            let #close_target = &self.#close_target;
-                            #close_target_optional_check
-                            anchor_lang::AccountsClose::close(
-                                &self.#ident,
-                                #close_target.to_account_info(),
-                            ).map_err(|e| e.with_account_name(#name_str))?;
-                        }
+                        anchor_lang::AccountsClose::close(
+                            &self.#ident,
+                            self.#close_target.to_account_info(),
+                        ).map_err(|e| e.with_account_name(#name_str))?;
                     }
                 } else {
                     match f.constraints.is_mutable() {
                         false => quote! {},
-                        true => match &f.ty {
-                            // `LazyAccount` is special because it has a custom `exit` method.
-                            Ty::LazyAccount(_) => quote! {
-                                self.#ident.exit(program_id)
-                                    .map_err(|e| e.with_account_name(#name_str))?;
-                            },
-                            _ => quote! {
-                                anchor_lang::AccountsExit::exit(&self.#ident, program_id)
-                                    .map_err(|e| e.with_account_name(#name_str))?;
-                            },
+                        true => quote! {
+                            anchor_lang::AccountsExit::exit(&self.#ident, program_id)
+                                .map_err(|e| e.with_account_name(#name_str))?;
                         },
                     }
                 }
